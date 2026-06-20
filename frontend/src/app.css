@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #101828;
+  background: #f8fafc;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+html, body {
+  min-height: 100%;
+  margin: 0;
+  background: #f8fafc;
+}
+
+body {
+  color: #101828;
+}
+
+.panel {
+  @apply rounded-3xl border border-slate-200 bg-white/85 shadow-glow backdrop-blur;
+}
+
+.button-primary {
+  @apply inline-flex items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700;
+}
+
+.button-secondary {
+  @apply inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50;
+}
+
+.field {
+  @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100;
+}
