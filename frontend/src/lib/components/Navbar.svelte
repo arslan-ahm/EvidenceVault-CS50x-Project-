@@ -57,8 +57,8 @@
   <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
     <!-- Logo -->
     <a href="/" class="group flex items-center gap-3">
-      <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 group-hover:shadow-blue-500/30 group-hover:scale-105">
-        EV
+      <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20 transition-all duration-300 group-hover:shadow-blue-500/30 group-hover:scale-105">
+        <img src="/logo.png" alt="EvidenceVault" class="h-6 w-6" />
       </div>
       <div class="hidden sm:block">
         <p class="text-sm font-bold tracking-tight text-slate-900 dark:text-white">EvidenceVault</p>

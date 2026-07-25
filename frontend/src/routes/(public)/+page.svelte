@@ -731,8 +731,8 @@
         <!-- Brand -->
         <div class="space-y-4">
           <div class="flex items-center gap-3">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-base font-bold text-white shadow-lg">
-              EV
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg">
+              <img src="/logo.png" alt="EvidenceVault" class="h-7 w-7" />
             </div>
             <div>
               <p class="text-lg font-bold text-slate-900 dark:text-white">EvidenceVault</p>

@@ -16,7 +16,7 @@
     },
     {
       href: '/cases/new',
-      label: 'New case',
+      label: 'New complaint',
       icon: 'M12 4v16m8-8H4'
     },
     {
@@ -55,7 +55,7 @@
 <!-- Mobile top bar -->
 <div class="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-950 lg:hidden">
   <a href="/dashboard" class="flex items-center gap-2.5">
-    <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-xs font-bold text-white">EV</div>
+    <img src="/logo.png" alt="EvidenceVault" class="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 p-1" />
     <span class="text-sm font-bold text-slate-900 dark:text-white">EvidenceVault</span>
   </a>
   <button
@@ -78,7 +78,7 @@
   class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-slate-200 bg-white transition-transform duration-200 dark:border-slate-800 dark:bg-slate-950 lg:translate-x-0 {mobileOpen ? 'translate-x-0' : '-translate-x-full'}"
 >
   <a href="/dashboard" class="hidden items-center gap-2.5 border-b border-slate-200 px-5 py-5 dark:border-slate-800 lg:flex">
-    <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-xs font-bold text-white">EV</div>
+    <img src="/logo.png" alt="EvidenceVault" class="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 p-1" />
     <div>
       <p class="text-sm font-bold leading-none text-slate-900 dark:text-white">EvidenceVault</p>
       <p class="mt-1 text-[10px] font-medium uppercase tracking-[0.15em] text-slate-400 dark:text-slate-500">Workspace</p>
