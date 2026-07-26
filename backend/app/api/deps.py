@@ -51,4 +51,27 @@ def get_current_user(
 
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+    if user.is_banned:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account suspended")
     return user
+
+
+def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
+    if not current_user.is_admin:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required")
+    return current_user
+
+
+def get_current_user_optional(
+    session: Session = Depends(get_session),
+    token_cookie: str | None = Cookie(default=None, alias=get_settings().cookie_name),
+    authorization: str | None = Header(default=None),
+) -> User | None:
+    """Like get_current_user, but returns None instead of raising when unauthenticated
+    or the token is invalid — for endpoints that serve both public and private content."""
+    if not token_cookie and not authorization:
+        return None
+    try:
+        return get_current_user(session=session, token_cookie=token_cookie, authorization=authorization)
+    except HTTPException:
+        return None

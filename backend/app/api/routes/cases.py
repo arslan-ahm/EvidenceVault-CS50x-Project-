@@ -6,12 +6,30 @@ from sqlmodel import Session, select
 from app.api.deps import get_current_user
 from app.db.session import get_session
 from app.models.case import Case, CaseCreate, CaseRead, CaseUpdate
+from app.models.category import Category
 from app.models.evidence import Evidence
+from app.models.organization import Organization
 from app.models.timeline import TimelineEvent
 from app.models.user import User
 from app.services.report import build_case_report_pdf
 
 router = APIRouter()
+
+
+def _ensure_category(session: Session, category_value: str) -> str:
+    """If the category value doesn't exist in the DB yet, add it automatically.
+    Returns the normalized value."""
+    normalized = category_value.strip().lower().replace(" ", "_")
+    if not normalized:
+        return "other"
+    existing = session.exec(select(Category).where(Category.value == normalized)).first()
+    if existing:
+        return existing.value
+    # Auto-register new category
+    label = category_value.strip()
+    session.add(Category(id=str(uuid4()), value=normalized, label=label))
+    session.commit()
+    return normalized
 
 
 def _get_case_for_user(session: Session, case_id: str, user_id: str) -> Case:
@@ -21,25 +39,66 @@ def _get_case_for_user(session: Session, case_id: str, user_id: str) -> Case:
     return case
 
 
+def _org_name(session: Session, organization_id: str | None) -> str | None:
+    if not organization_id:
+        return None
+    organization = session.get(Organization, organization_id)
+    return organization.name if organization else None
+
+
+def _to_read(case: Case, organization_name: str | None = None) -> CaseRead:
+    return CaseRead(
+        id=case.id,
+        title=case.title,
+        description=case.description,
+        organization_id=case.organization_id,
+        organization_name=organization_name,
+        category=case.category,
+        severity=case.severity,
+        status=case.status,
+        is_public=case.is_public,
+        user_id=case.user_id,
+        views_count=case.views_count,
+        upvotes_count=case.upvotes_count,
+        created_at=case.created_at,
+    )
+
+
 @router.get("", response_model=list[CaseRead])
 def list_cases(session: Session = Depends(get_session), current_user: User = Depends(get_current_user)) -> list[CaseRead]:
-    cases = session.exec(select(Case).where(Case.user_id == current_user.id).order_by(Case.created_at.desc())).all()
-    return [CaseRead(id=item.id, title=item.title, description=item.description, user_id=item.user_id, created_at=item.created_at) for item in cases]
+    rows = session.exec(
+        select(Case, Organization.name)
+        .join(Organization, Case.organization_id == Organization.id, isouter=True)
+        .where(Case.user_id == current_user.id)
+        .order_by(Case.created_at.desc())
+    ).all()
+    return [_to_read(case, organization_name) for case, organization_name in rows]
 
 
 @router.post("", response_model=CaseRead, status_code=status.HTTP_201_CREATED)
 def create_case(payload: CaseCreate, session: Session = Depends(get_session), current_user: User = Depends(get_current_user)) -> CaseRead:
-    case = Case(id=str(uuid4()), user_id=current_user.id, title=payload.title, description=payload.description)
+    normalized_category = _ensure_category(session, payload.category or "other")
+    case = Case(
+        id=str(uuid4()),
+        user_id=current_user.id,
+        title=payload.title,
+        description=payload.description,
+        organization_id=payload.organization_id,
+        category=normalized_category,
+        severity=payload.severity,
+        status=payload.status,
+        is_public=payload.is_public,
+    )
     session.add(case)
     session.commit()
     session.refresh(case)
-    return CaseRead(id=case.id, title=case.title, description=case.description, user_id=case.user_id, created_at=case.created_at)
+    return _to_read(case, _org_name(session, case.organization_id))
 
 
 @router.get("/{case_id}", response_model=CaseRead)
 def get_case(case_id: str, session: Session = Depends(get_session), current_user: User = Depends(get_current_user)) -> CaseRead:
     case = _get_case_for_user(session, case_id, current_user.id)
-    return CaseRead(id=case.id, title=case.title, description=case.description, user_id=case.user_id, created_at=case.created_at)
+    return _to_read(case, _org_name(session, case.organization_id))
 
 
 @router.put("/{case_id}", response_model=CaseRead)
@@ -49,10 +108,20 @@ def update_case(case_id: str, payload: CaseUpdate, session: Session = Depends(ge
         case.title = payload.title
     if payload.description is not None:
         case.description = payload.description
+    if payload.organization_id is not None:
+        case.organization_id = payload.organization_id
+    if payload.category is not None:
+        case.category = _ensure_category(session, payload.category)
+    if payload.severity is not None:
+        case.severity = payload.severity
+    if payload.status is not None:
+        case.status = payload.status
+    if payload.is_public is not None:
+        case.is_public = payload.is_public
     session.add(case)
     session.commit()
     session.refresh(case)
-    return CaseRead(id=case.id, title=case.title, description=case.description, user_id=case.user_id, created_at=case.created_at)
+    return _to_read(case, _org_name(session, case.organization_id))
 
 
 @router.delete("/{case_id}")

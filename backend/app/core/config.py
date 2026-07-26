@@ -34,16 +34,47 @@ class Settings(BaseSettings):
 
     # Frontend
     frontend_origin: str = "http://localhost:5173"
+    # This backend's own publicly reachable base URL (used to build absolute links,
+    # e.g. locally-stored avatar images, when MEGA isn't configured).
+    public_api_base_url: str = "http://localhost:8000/api"
 
-    # Uploads
+    # Uploads (local fallback when MEGA not configured)
     uploads_dir: Path = Path("uploads")
     max_upload_mb: int = 25
+
+    # SMTP (email) — leave smtp_host empty to disable outgoing email
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_username: str = ""
+    smtp_password: str = ""
+    smtp_use_tls: bool = True
+    email_from: str = "noreply@evidencevault.app"
+
+    # Frontend URLs for emails
+    frontend_reset_url: str = "http://localhost:5173/reset-password"
 
     # Supabase integration (optional)
     supabase_url: Optional[str] = None
     supabase_publishable_key: Optional[str] = None
     supabase_secret_key: Optional[str] = None
     supabase_jwks_url: Optional[str] = None
+
+    # ── MEGA (evidence/avatar storage) ────────────────────────────────────────
+    # When both are set, uploads go to this MEGA account instead of local disk.
+    mega_uploads_email: Optional[str] = None
+    mega_uploads_password: Optional[str] = None
+
+    # ── Cloudflare Turnstile (CAPTCHA) ────────────────────────────────────────
+    # When set, the register and login endpoints verify the Turnstile token.
+    cloudflare_turnstile_secret: Optional[str] = None
+
+    @property
+    def mega_enabled(self) -> bool:
+        return bool(self.mega_uploads_email and self.mega_uploads_password)
+
+    @property
+    def turnstile_enabled(self) -> bool:
+        return bool(self.cloudflare_turnstile_secret)
 
 
 @lru_cache

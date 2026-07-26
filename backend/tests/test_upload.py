@@ -14,7 +14,7 @@ def test_upload_evidence_generates_timeline(client, monkeypatch, tmp_path: Path)
     async def fake_save_upload_file(upload_file, user_id: str, case_id: str):
         destination = tmp_path / f"{user_id}-{case_id}.txt"
         destination.write_text(file_path.read_text(encoding="utf-8"), encoding="utf-8")
-        return destination, destination.name
+        return destination, destination.name, None
 
     monkeypatch.setattr(evidence_route, "save_upload_file", fake_save_upload_file)
     monkeypatch.setattr(evidence_route, "extract_text_from_file", lambda saved_path: file_path.read_text(encoding="utf-8"))

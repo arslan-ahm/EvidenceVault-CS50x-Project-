@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Backend Tests",
+			"type": "shell",
+			"command": ".venv\\Scripts\\python.exe",
+			"args": [
+				"-m",
+				"pytest",
+				"backend/tests",
+				"-v",
+				"--tb=short"
+			],
+			"group": "test"
+		}
+	]
+}

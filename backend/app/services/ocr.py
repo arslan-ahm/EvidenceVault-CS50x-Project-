@@ -19,17 +19,23 @@ def extract_text_from_file(file_path: Path) -> str:
 
 
 def extract_text_from_pdf(file_path: Path) -> str:
-    chunks: list[str] = []
-    with pdfplumber.open(str(file_path)) as pdf:
-        for page in pdf.pages:
-            text = page.extract_text() or ""
-            if text.strip():
-                chunks.append(text)
-    if chunks:
-        return "\n".join(chunks)
+    try:
+        chunks: list[str] = []
+        with pdfplumber.open(str(file_path)) as pdf:
+            for page in pdf.pages:
+                text = page.extract_text() or ""
+                if text.strip():
+                    chunks.append(text)
+        if chunks:
+            return "\n".join(chunks)
+    except Exception:
+        pass
     return ""
 
 
 def extract_text_from_image(file_path: Path) -> str:
-    image = Image.open(file_path)
-    return pytesseract.image_to_string(image)
+    try:
+        image = Image.open(file_path)
+        return pytesseract.image_to_string(image)
+    except Exception:
+        return ""

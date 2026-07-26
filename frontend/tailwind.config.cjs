@@ -1,13 +1,21 @@
 module.exports = {
+  darkMode: ['selector', '[data-theme="dark"]'],
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['Lexend', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+      },
       colors: {
         ink: '#101828',
         mist: '#f8fafc',
         veil: '#e4ebf4',
         accent: '#2563eb',
-        accentSoft: '#dbeafe'
+        accentSoft: '#dbeafe',
+        success: '#22c55e',
+        danger: '#ef4444',
+        warn: '#f59e0b'
       },
       boxShadow: {
         glow: '0 20px 60px rgba(37, 99, 235, 0.14)'

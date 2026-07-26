@@ -9,6 +9,8 @@ class EvidenceBase(SQLModel):
     file_name: str
     file_type: str
     extracted_text: str | None = None
+    # When stored in MEGA, this holds the shareable link; None for local storage
+    public_url: str | None = Field(default=None, nullable=True)
     metadata_json: dict = Field(default_factory=dict, sa_column=Column(JSON, nullable=False))
 
 

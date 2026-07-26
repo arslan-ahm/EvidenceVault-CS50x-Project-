@@ -3,33 +3,230 @@
 @tailwind utilities;
 
 :root {
-  color: #101828;
-  background: #f8fafc;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color-scheme: light;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
 }
 
 html, body {
   min-height: 100%;
   margin: 0;
-  background: #f8fafc;
+  scroll-behavior: smooth;
 }
 
 body {
-  color: #101828;
+  @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100;
+  font-feature-settings: 'cv11', 'ss01', 'tnum';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+h1, h2, h3 {
+  font-family: 'Lexend', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* ── Shared surface primitives ───────────────────────────── */
 .panel {
-  @apply rounded-3xl border border-slate-200 bg-white/85 shadow-glow backdrop-blur;
+  @apply rounded-3xl border border-slate-200 bg-white shadow-glow dark:border-slate-700/60 dark:bg-slate-800/50 dark:backdrop-blur;
+}
+
+.card {
+  @apply rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700/60 dark:bg-slate-800/50 dark:shadow-xl dark:backdrop-blur;
 }
 
 .button-primary {
-  @apply inline-flex items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700;
+  @apply inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/25 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40 disabled:hover:shadow-none dark:bg-accent;
 }
 
 .button-secondary {
-  @apply inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50;
+  @apply inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-all duration-300 hover:border-blue-400 hover:text-slate-900 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40 dark:border-slate-700/60 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-blue-500/30 dark:hover:text-white;
+}
+
+.button-danger {
+  @apply inline-flex items-center justify-center rounded-xl border border-red-300 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 transition-all duration-300 hover:bg-red-100 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20;
 }
 
 .field {
-  @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100;
+  @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none text-slate-900 transition-all duration-300 placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 dark:border-slate-600/60 dark:bg-slate-700/50 dark:text-white dark:placeholder:text-slate-500;
+}
+
+.field:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+/* ── Form field states ───────────────────────────────────── */
+.field-invalid {
+  @apply border-red-500/70 focus:border-red-500 focus:ring-red-500/20;
+}
+
+.field-valid {
+  @apply border-emerald-500/50;
+}
+
+.field-label {
+  @apply mb-1.5 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400;
+}
+
+.field-help {
+  @apply mt-1.5 text-xs text-slate-500 dark:text-slate-500;
+}
+
+.field-error-text {
+  @apply mt-1.5 flex items-center gap-1.5 text-xs font-medium text-red-600 dark:text-red-400;
+}
+
+.field-counter {
+  @apply text-[0.65rem] font-medium normal-case tracking-normal text-slate-400 dark:text-slate-500;
+}
+
+.field-counter-warn {
+  @apply text-amber-500 dark:text-amber-400;
+}
+
+/* ── Password visibility toggle ──────────────────────────── */
+.password-toggle {
+  @apply absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 transition-colors duration-200 hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:text-slate-500 dark:hover:bg-slate-600/40 dark:hover:text-slate-200;
+}
+
+/* ── Password strength meter ─────────────────────────────── */
+.strength-track {
+  @apply h-1.5 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700/60;
+}
+
+.strength-fill {
+  @apply h-full rounded-full transition-all duration-300 ease-out;
+}
+
+/* ── Select dropdown ──────────────────────────────────────── */
+select.field {
+  @apply appearance-none cursor-pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  padding-right: 2.5rem;
+}
+
+:root[data-theme='dark'] select.field {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+}
+
+select.field option {
+  @apply bg-white text-slate-900 px-3 py-2 dark:bg-slate-800 dark:text-white;
+}
+
+select.field optgroup {
+  @apply bg-slate-100 text-slate-500 font-semibold dark:bg-slate-900 dark:text-slate-400;
+}
+
+/* Custom select wrapper for enhanced styling */
+.select-wrapper {
+  @apply relative;
+}
+
+.select-wrapper select.field {
+  @apply pr-10;
+}
+
+.select-wrapper .select-chevron {
+  @apply pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition-transform duration-200 dark:text-slate-500;
+}
+
+.select-wrapper select.field:focus + .select-chevron {
+  @apply text-blue-500 dark:text-blue-400;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Reveal animation classes */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children animation */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stagger-children.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Smooth card hover */
+.card-hover {
+  @apply transition-all duration-500;
+}
+
+.card-hover:hover {
+  @apply -translate-y-1 shadow-xl;
+  box-shadow: 0 20px 60px rgba(37, 99, 235, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Skeleton loading */
+.skeleton {
+  @apply animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-700;
+}
+
+/* Gradient text */
+.gradient-text {
+  @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400;
+}
+
+/* Glass morphism */
+.glass {
+  @apply border border-slate-200 bg-white/60 shadow-lg backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-800/40;
+}
+
+/* Animated gradient */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Pulse glow */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.15); }
+  50% { box-shadow: 0 0 40px rgba(37, 99, 235, 0.25); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Grid background */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(37, 99, 235, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
