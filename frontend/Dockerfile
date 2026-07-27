@@ -13,9 +13,8 @@ FROM oven/bun:1.1.29 AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-COPY --from=builder /app /app
-ENV HOST=0.0.0.0
-ENV PORT=3000
+COPY --from=builder /app/build /app/build
+RUN bun add serve
 
 EXPOSE 3000
-CMD ["bun", "./build/index.js"]
+CMD ["bunx", "serve", "build", "-l", "3000"]

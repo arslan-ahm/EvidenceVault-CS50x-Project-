@@ -1,0 +1,17 @@
+# Vercel's Python runtime installs from this file for the api/index.py
+# serverless function. Kept in sync with backend/pyproject.toml.
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+sqlmodel>=0.0.22
+pydantic>=2.8.0
+pydantic-settings>=2.4.0
+python-jose[cryptography]>=3.3.0
+bcrypt>=4.3.0
+python-multipart>=0.0.9
+psycopg[binary]>=3.2.1
+pillow>=10.4.0
+pytesseract>=0.3.13
+pdfplumber>=0.11.4
+reportlab>=4.2.2
+slowapi>=0.1.9
+mega.py>=1.0.8
