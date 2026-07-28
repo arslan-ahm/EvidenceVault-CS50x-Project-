@@ -1,6 +1,6 @@
 # Architecture Overview
 
-EvidenceVault AI uses a monorepo with a separate frontend and backend, joined by a Docker Compose deployment.
+EvidenceVault uses a monorepo with a separate frontend and backend, joined by a Docker Compose deployment.
 
 ## Backend
 

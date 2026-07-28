@@ -80,7 +80,7 @@ def send_password_reset_email(to_email: str, reset_token: str) -> bool:
             <div style="background: #fff; padding: 30px; border-radius: 0 0 16px 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
                 <p style="color: #374151; font-size: 16px; line-height: 1.6;">Hello,</p>
                 <p style="color: #374151; font-size: 16px; line-height: 1.6;">
-                    We received a request to reset your EvidenceVault password. 
+                    We received a request to reset your EvidenceVault password.
                     Click the button below to create a new password.
                 </p>
                 <div style="text-align: center; margin: 30px 0;">
@@ -95,7 +95,7 @@ def send_password_reset_email(to_email: str, reset_token: str) -> bool:
                 </p>
                 <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
                 <p style="color: #9ca3af; font-size: 12px;">
-                    EvidenceVault — Responsible Disclosure Intelligence
+                    EvidenceVault — Report Scams & Complaints
                 </p>
             </div>
         </div>
@@ -122,17 +122,17 @@ def send_welcome_email(to_email: str, name: str) -> bool:
                 <p style="color: #374151; font-size: 16px; line-height: 1.6;">Hi {name},</p>
                 <p style="color: #374151; font-size: 16px; line-height: 1.6;">
                     Welcome to EvidenceVault! Your account has been successfully created.
-                    You can now submit vulnerability reports, track cases, and collaborate with the security community.
+                    You can now file scam reports and complaints, track their progress, and help warn the community.
                 </p>
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="{get_settings().frontend_origin}/explore" 
+                    <a href="{get_settings().frontend_origin}/explore"
                        style="background: linear-gradient(135deg, #2563eb, #4f46e5); color: #fff; padding: 14px 36px; border-radius: 12px; text-decoration: none; font-size: 16px; font-weight: 600; display: inline-block;">
-                        Explore Reports
+                        Explore Complaints
                     </a>
                 </div>
                 <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
                 <p style="color: #9ca3af; font-size: 12px;">
-                    EvidenceVault — Responsible Disclosure Intelligence
+                    EvidenceVault — Report Scams & Complaints
                 </p>
             </div>
         </div>
@@ -165,7 +165,7 @@ def send_change_password_notification(to_email: str) -> bool:
                 </p>
                 <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
                 <p style="color: #9ca3af; font-size: 12px;">
-                    EvidenceVault — Responsible Disclosure Intelligence
+                    EvidenceVault — Report Scams & Complaints
                 </p>
             </div>
         </div>

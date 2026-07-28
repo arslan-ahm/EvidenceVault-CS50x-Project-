@@ -54,13 +54,13 @@
         <span class="gradient-text">EvidenceVault</span>
       </h1>
       <p class="max-w-xl text-lg text-slate-600 dark:text-slate-400">
-        Access your dashboard, manage cases, and collaborate with the security community.
+        Access your dashboard, manage your complaints, and stay informed with the community.
       </p>
       <div class="hidden space-y-4 lg:block">
         {#each [
           { icon: '🔐', text: 'Secured with JWT authentication' },
-          { icon: '📁', text: 'Manage your submitted cases' },
-          { icon: '👤', text: 'Personalized researcher profile' },
+          { icon: '📁', text: 'Manage your submitted complaints' },
+          { icon: '👤', text: 'Personalized reporter profile' },
         ] as item}
           <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
             <span>{item.icon}</span>

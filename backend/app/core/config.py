@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     )
 
     # App
-    app_name: str = "EvidenceVault AI"
+    app_name: str = "EvidenceVault"
     api_v1_prefix: str = "/api"
 
     # Database

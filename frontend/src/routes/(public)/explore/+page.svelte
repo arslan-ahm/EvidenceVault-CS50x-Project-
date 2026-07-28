@@ -50,7 +50,7 @@
 </script>
 
 <svelte:head>
-  <title>Explore Reports | EvidenceVault AI</title>
+  <title>Explore Complaints | EvidenceVault</title>
 </svelte:head>
 
 <div class="min-h-screen bg-slate-50 px-4 pb-8 pt-24 text-slate-900 dark:bg-slate-900 dark:text-white sm:px-6 lg:px-8">
@@ -59,12 +59,12 @@
       <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">Explore</p>
-          <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">Browse public vulnerability reports</h1>
+          <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">Browse public scam & complaint reports</h1>
           <p class="mt-2 max-w-2xl text-sm text-slate-500 dark:text-slate-400">
-            Search, filter, and inspect public disclosures across organizations and categories.
+            Search, filter, and review public complaints across organizations and categories.
           </p>
         </div>
-        <a class="button-primary" href={$currentUser ? '/cases/new' : '/register'}>Submit report</a>
+        <a class="button-primary" href={$currentUser ? '/cases/new' : '/register'}>File a complaint</a>
       </div>
 
       <div class="mt-6 grid gap-3 lg:grid-cols-[1.4fr_0.6fr_0.6fr_0.6fr_0.6fr]">

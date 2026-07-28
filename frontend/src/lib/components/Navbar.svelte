@@ -62,7 +62,7 @@
       </div>
       <div class="hidden sm:block">
         <p class="text-sm font-bold tracking-tight text-slate-900 dark:text-white">EvidenceVault</p>
-        <p class="-mt-0.5 text-[10px] font-medium uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">Disclosure Intelligence</p>
+        <p class="-mt-0.5 text-[10px] font-medium uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">Report Scams & Complaints</p>
       </div>
     </a>
 

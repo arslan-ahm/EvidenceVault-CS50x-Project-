@@ -54,7 +54,7 @@
   }
 
   async function deleteCase(item: AdminCase) {
-    if (!confirm(`Delete case "${item.title}"? This cannot be undone.`)) return;
+    if (!confirm(`Delete complaint "${item.title}"? This cannot be undone.`)) return;
     await apiDelete(`/admin/cases/${item.id}`);
     cases = cases.filter((c) => c.id !== item.id);
   }
@@ -70,7 +70,7 @@
   }
 
   async function deleteUser(user: AdminUser) {
-    if (!confirm(`Delete user ${user.email} and all their cases? This cannot be undone.`)) return;
+    if (!confirm(`Delete user ${user.email} and all their complaints? This cannot be undone.`)) return;
     try {
       await apiDelete(`/admin/users/${user.id}`);
       users = users.filter((u) => u.id !== user.id);
@@ -94,7 +94,7 @@
   }
 
   async function deleteOrg(org: PublicOrganization) {
-    if (!confirm(`Delete organization "${org.name}"? Cases linked to it will become unaffiliated.`)) return;
+    if (!confirm(`Delete organization "${org.name}"? Complaints linked to it will become unaffiliated.`)) return;
     await apiDelete(`/organizations/${org.id}`);
     organizations = organizations.filter((o) => o.id !== org.id);
   }
@@ -127,7 +127,7 @@
 </script>
 
 <svelte:head>
-  <title>Admin | EvidenceVault AI</title>
+  <title>Admin | EvidenceVault</title>
 </svelte:head>
 
 {#if !ready}
@@ -144,8 +144,8 @@
           ['Users', stats.total_users],
           ['Admins', stats.admin_users],
           ['Banned', stats.banned_users],
-          ['Cases', stats.total_cases],
-          ['Public cases', stats.public_cases],
+          ['Complaints', stats.total_cases],
+          ['Public complaints', stats.public_cases],
           ['Organizations', stats.total_organizations],
           ['Comments', stats.total_comments],
         ] as [label, value]}
@@ -213,7 +213,7 @@
                 </td>
               </tr>
             {:else}
-              <tr><td class="px-4 py-6 text-slate-500 dark:text-slate-400" colspan="7">No cases yet.</td></tr>
+              <tr><td class="px-4 py-6 text-slate-500 dark:text-slate-400" colspan="7">No complaints yet.</td></tr>
             {/each}
           </tbody>
         </table>
@@ -225,7 +225,7 @@
             <tr>
               <th class="px-4 py-3">Email</th>
               <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Cases</th>
+              <th class="px-4 py-3">Complaints</th>
               <th class="px-4 py-3">Role</th>
               <th class="px-4 py-3">Status</th>
               <th class="px-4 py-3">Actions</th>

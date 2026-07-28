@@ -1,8 +1,8 @@
-🛡️ EvidenceVault AI — Community Vulnerability Disclosure Platform
+🛡️ EvidenceVault — Report Scams & Consumer Complaints
 ==================================================================
 
-**Report it. Prove it. Track it.**
-A full-stack platform for submitting, verifying, and tracking security vulnerability reports — with OCR-powered evidence processing, auto-generated timelines, and a public disclosure feed. Built as a CS50x final project. 🎓🔐
+**Report it. Prove it. Warn others.**
+A full-stack platform for reporting scams and filing complaints against organizations — social media scams (Facebook, Telegram, Instagram, WhatsApp), online marketplace fraud (Daraz, Alibaba, OLX, eBay), and complaints against companies, software houses, and service providers. Backed by OCR-powered evidence processing, auto-generated timelines, and a public complaint feed. Built as a CS50x final project. 🎓📢
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
 ![SvelteKit](https://img.shields.io/badge/SvelteKit-FF3E00?style=for-the-badge&logo=svelte&logoColor=white)
@@ -18,14 +18,14 @@ A full-stack platform for submitting, verifying, and tracking security vulnerabi
 
 ## ✨ What's the Vibe?
 
-EvidenceVault AI is what happens when a bug-bounty disclosure feed meets a digital-evidence locker. Security researchers submit vulnerability reports with real evidence (screenshots, PDFs, logs) — the backend OCRs the files, auto-builds a timeline from whatever dates it finds in the text, and the whole thing becomes a searchable, upvotable, publicly browsable report. Admins get a moderation dashboard. Everyone else gets a clean, dark-mode-friendly feed of what's happening. 🕵️‍♂️📄
+EvidenceVault is what happens when a consumer-complaints board meets a digital-evidence locker. Anyone who's been scammed on Facebook, Telegram, Daraz, Alibaba, or ripped off by a software house or service provider can file a complaint with real evidence (screenshots, chat logs, receipts, PDFs) — the backend OCRs the files, auto-builds a timeline from whatever dates it finds in the text, and the whole thing becomes a searchable, upvotable, publicly browsable complaint. Admins get a moderation dashboard. Everyone else gets a clean, dark-mode-friendly feed of who's scamming who. 🕵️‍♂️📄
 
 | 🎯 You Get This | 📦 Without the Bloat |
 |---|---|
-| ✅ Public disclosure feed — browse, search & filter reports | ❌ No login wall for read-only access |
-| ✅ OCR-powered evidence — text pulled straight out of screenshots & PDFs | ❌ No manual transcription |
+| ✅ Public complaint feed — browse, search & filter scam reports | ❌ No login wall for read-only access |
+| ✅ OCR-powered evidence — text pulled straight out of screenshots, receipts & chat logs | ❌ No manual transcription |
 | ✅ Auto-generated timelines — dates detected in evidence become a case timeline | ❌ No manual timeline building |
-| ✅ Organizations, categories, upvotes & threaded comments | ❌ No flat, context-free report list |
+| ✅ Organizations, scam categories, upvotes & threaded comments | ❌ No flat, context-free complaint list |
 | ✅ Cookie + JWT auth, with optional Supabase auth | ❌ No sketchy homegrown session handling |
 | ✅ Admin dashboard — stats, user/case/comment moderation | ❌ No digging through a database by hand |
 | ✅ Cloudflare Turnstile on auth routes | ❌ No bot-flooded signups |
@@ -39,13 +39,13 @@ EvidenceVault AI is what happens when a bug-bounty disclosure feed meets a digit
 | 🧠 Modern stack | FastAPI + SQLModel on the backend, SvelteKit 5 + TypeScript on the frontend |
 | 🔍 OCR pipeline | `pytesseract` for images, `pdfplumber` for PDFs — extracted text is stored alongside each evidence item |
 | 🗓️ Auto timelines | Dates found inside extracted evidence text are turned into ordered case timeline events |
-| 🌍 Public explore feed | Anonymous browsing, search, filtering, sorting over public reports and organizations |
+| 🌍 Public complaint feed | Anonymous browsing, search, filtering, sorting over public complaints and organizations |
 | 🔐 Full auth flow | Register, login, forgot/reset password (emailed), change password, session cookies |
-| 🏢 Organizations | Reports can be linked to affected organizations with their own public profile |
-| 💬 Community layer | Threaded comments and upvotes on every report |
+| 🏢 Organizations | Complaints can be linked to the platform, company, or organization involved, each with its own public profile |
+| 💬 Community layer | Threaded comments and upvotes on every complaint, so others can chime in or confirm the same scam |
 | 🛠️ Admin surface | Platform-wide stats, user bans, case & comment moderation, cascading deletes |
 | ☁️ Flexible storage | Evidence uploads go to MEGA when configured, falling back to local disk otherwise |
-| 📤 PDF export | Generate a shareable PDF report for any case with ReportLab |
+| 📤 PDF export | Generate a shareable PDF report for any complaint with ReportLab |
 | 🚦 Rate limiting | In-memory rate limiter on top of `slowapi` guards the API from abuse |
 
 ## 🧰 Tech Stack
@@ -92,7 +92,7 @@ EvidenceVault/
 │   ├── 📂 src/
 │   │   ├── 📂 routes/
 │   │   │   ├── 📂 (public)/         #   🌍 Landing, explore, login, register, password reset
-│   │   │   └── 📂 (app)/            #   🔒 Dashboard, case detail, profile, admin
+│   │   │   └── 📂 (app)/            #   🔒 Dashboard, complaint detail, profile, admin
 │   │   └── 📂 lib/
 │   │       ├── 📂 components/       #   Navbar, Sidebar, EvidenceUpload, Lightbox, ...
 │   │       ├── 📂 stores/           #   Auth & theme stores
@@ -218,9 +218,9 @@ This repo is set up to deploy **frontend and backend to the same Vercel domain**
 
 | Phase | 🎯 Focus | Status |
 |---|---|---|
-| 1 🏗️ | Platform foundation — orgs, reports, categories, comments, votes, admin data model | ✅ Done |
-| 2 🌍 | Public discovery — landing page, explore/search, report detail pages | ✅ Done |
-| 3 📝 | Submission & account flows — case creation, profile, password reset | ✅ Done |
+| 1 🏗️ | Platform foundation — orgs, complaints, categories, comments, votes, admin data model | ✅ Done |
+| 2 🌍 | Public discovery — landing page, explore/search, complaint detail pages | ✅ Done |
+| 3 📝 | Submission & account flows — complaint creation, profile, password reset | ✅ Done |
 | 4 💬 | Community & trust — comments, upvotes | ✅ Done |
 | 5 🛠️ | Admin area — moderation dashboard, stats | ✅ Done |
 | 6 🔒 | Hardening — rate limiting, Turnstile CAPTCHA, audit trails, migrations | 🚧 Ongoing |

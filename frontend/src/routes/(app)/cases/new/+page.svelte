@@ -33,17 +33,18 @@
   ];
 
   let categoryOptions: { value: string; label: string }[] = [
-    { value: 'xss', label: 'Cross-Site Scripting (XSS)' },
-    { value: 'sql_injection', label: 'SQL Injection' },
-    { value: 'csrf', label: 'Cross-Site Request Forgery (CSRF)' },
-    { value: 'authentication', label: 'Authentication Bypass' },
-    { value: 'authorization', label: 'Authorization Issue' },
-    { value: 'information_disclosure', label: 'Information Disclosure' },
-    { value: 'remote_code_execution', label: 'Remote Code Execution' },
-    { value: 'privilege_escalation', label: 'Privilege Escalation' },
-    { value: 'file_upload', label: 'File Upload Vulnerability' },
-    { value: 'ssrf', label: 'Server-Side Request Forgery (SSRF)' },
-    { value: 'other', label: 'Other / General' },
+    { value: 'social_media_scam', label: 'Social Media Scam (Facebook, Telegram, Instagram, WhatsApp)' },
+    { value: 'marketplace_fraud', label: 'Online Marketplace Fraud (Daraz, Alibaba, OLX, eBay)' },
+    { value: 'phishing', label: 'Phishing / Account Takeover' },
+    { value: 'fake_job', label: 'Fake Job / Employment Scam' },
+    { value: 'investment_scam', label: 'Investment / Crypto Scam' },
+    { value: 'software_service_complaint', label: 'Software & App Service Complaint' },
+    { value: 'billing_dispute', label: 'Billing & Subscription Dispute' },
+    { value: 'poor_service', label: 'Poor Service / Breach of Contract' },
+    { value: 'rental_property_scam', label: 'Rental & Property Scam' },
+    { value: 'identity_theft', label: 'Identity Theft / Impersonation' },
+    { value: 'delivery_courier_scam', label: 'Delivery / Courier Scam' },
+    { value: 'other', label: 'Other / General Complaint' },
   ];
 
   // Form data
@@ -56,9 +57,9 @@
   let formOrganizationName = '';
   let formIsPublic = true;
 
-  const steps = ['Case Details', 'Classification', 'Organization', 'Review & Submit'];
+  const steps = ['Complaint Details', 'Classification', 'Organization', 'Review & Submit'];
 
-  $: titleError = validateLength(formTitle, { min: 5, max: 200 }, 'Case title');
+  $: titleError = validateLength(formTitle, { min: 5, max: 200 }, 'Complaint title');
   $: descriptionError = validateLength(formDescription, { min: 20, max: 10000 }, 'Description');
 
   onMount(async () => {
@@ -114,7 +115,7 @@
       const created = await apiPost<Case>('/cases', payload);
       await goto(`/cases/${created.id}`);
     } catch (error) {
-      errorMessage = error instanceof Error ? error.message : 'Failed to create case. Please try again.';
+      errorMessage = error instanceof Error ? error.message : 'Failed to file complaint. Please try again.';
       submitting = false;
     }
   }
@@ -139,7 +140,7 @@
 </script>
 
 <svelte:head>
-  <title>Create Case | EvidenceVault AI</title>
+  <title>File a Complaint | EvidenceVault</title>
 </svelte:head>
 
 <div class="mx-auto max-w-2xl">
@@ -200,15 +201,15 @@
           {#if step === 1}
             <!-- Step 1: Basic Info -->
             <div>
-              <h3 class="text-xl font-semibold text-slate-900 dark:text-white">Case details</h3>
-              <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Give your case a clear title and describe the vulnerability or incident.</p>
+              <h3 class="text-xl font-semibold text-slate-900 dark:text-white">Complaint details</h3>
+              <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Give your complaint a clear title and describe what happened.</p>
 
               <div class="mt-6 space-y-5">
                 <TextField
                   id="title"
-                  label="Case title"
+                  label="Complaint title"
                   bind:value={formTitle}
-                  placeholder="e.g. Reflected XSS in login redirect parameter"
+                  placeholder="e.g. Fake Daraz seller took payment and never shipped item"
                   required
                   maxlength={200}
                   error={titleError}
@@ -219,7 +220,7 @@
                   id="desc"
                   label="Description"
                   bind:value={formDescription}
-                  placeholder="Describe the vulnerability, how it was discovered, affected endpoints, and any immediate impact... (Markdown supported)"
+                  placeholder="Describe what happened, how you discovered it, and any platforms, accounts, or orders involved... (Markdown supported)"
                   required
                   maxlength={10000}
                   rows={9}
@@ -233,7 +234,7 @@
             <!-- Step 2: Classification -->
             <div>
               <h3 class="text-xl font-semibold text-slate-900 dark:text-white">Classification</h3>
-              <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Categorise the case and set severity to help prioritise your work.</p>
+              <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Categorise the complaint and set severity to help prioritise it.</p>
 
               <div class="mt-6 space-y-5">
                 <div>
@@ -285,7 +286,7 @@
             <!-- Step 3: Organization & Visibility -->
             <div>
               <h3 class="text-xl font-semibold text-slate-900 dark:text-white">Organization & visibility</h3>
-              <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Link the case to an organisation and control its visibility.</p>
+              <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Link the complaint to an organisation and control its visibility.</p>
 
               <div class="mt-6 space-y-5">
                 <div>
@@ -295,14 +296,14 @@
                     bind:value={formOrganizationId}
                     on:change={(e) => (formOrganizationName = e.detail.name)}
                   />
-                  <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">Search for an existing organisation, or type a new name to add it. Leave blank for a general case.</p>
+                  <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">Search for an existing organisation, or type a new name to add it. Leave blank for a general complaint.</p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-700/60 dark:bg-slate-900/50">
                   <div class="flex items-center justify-between">
                     <div>
-                      <p class="text-sm font-medium text-slate-900 dark:text-white">Public case</p>
-                      <p class="text-xs text-slate-500 dark:text-slate-400">Allow this case to appear in the public explore feed</p>
+                      <p class="text-sm font-medium text-slate-900 dark:text-white">Public complaint</p>
+                      <p class="text-xs text-slate-500 dark:text-slate-400">Allow this complaint to appear in the public explore feed</p>
                     </div>
                     <button
                       class="relative h-6 w-11 rounded-full transition-colors duration-300"
@@ -411,7 +412,7 @@
               Creating...
             {:else}
               <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Create case
+              File complaint
             {/if}
           </button>
         {/if}

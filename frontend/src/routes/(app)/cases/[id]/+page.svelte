@@ -65,7 +65,7 @@
   let editError = '';
   let editAttemptedSubmit = false;
 
-  $: editTitleError = validateLength(editTitle, { min: 5, max: 200 }, 'Case title');
+  $: editTitleError = validateLength(editTitle, { min: 5, max: 200 }, 'Complaint title');
   $: editDescriptionError = validateLength(editDescription, { min: 20, max: 10000 }, 'Description');
 
   const severityStyles: Record<string, string> = {
@@ -188,11 +188,11 @@
 </script>
 
 <svelte:head>
-  <title>{caseItem ? `${caseItem.title} | EvidenceVault AI` : 'Case | EvidenceVault AI'}</title>
+  <title>{caseItem ? `${caseItem.title} | EvidenceVault` : 'Complaint | EvidenceVault'}</title>
 </svelte:head>
 
 {#if loading}
-  <LoadingCard label="Loading case details..." />
+  <LoadingCard label="Loading complaint details..." />
 {:else if caseItem}
   <!-- Breadcrumb + page actions -->
   <div class="mb-6 flex items-center justify-between gap-4">
@@ -267,7 +267,7 @@
           <div class="mt-4 space-y-4">
             <TextField
               id="edit-title"
-              label="Case title"
+              label="Complaint title"
               bind:value={editTitle}
               required
               maxlength={200}

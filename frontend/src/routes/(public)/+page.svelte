@@ -12,25 +12,25 @@
   gsap.registerPlugin(ScrollTrigger);
 
   const categories = [
-    { name: 'XSS', icon: 'crosshair', desc: 'Cross-site scripting vulnerabilities', color: 'from-red-500/20 to-orange-500/20 border-red-500/20' },
-    { name: 'SQL Injection', icon: 'database', desc: 'Database injection attacks', color: 'from-purple-500/20 to-pink-500/20 border-purple-500/20' },
-    { name: 'Authentication', icon: 'lock', desc: 'Auth & session flaws', color: 'from-amber-500/20 to-yellow-500/20 border-amber-500/20' },
-    { name: 'Misconfigurations', icon: 'settings', desc: 'Server & cloud misconfigs', color: 'from-slate-500/20 to-gray-500/20 border-slate-500/20' },
-    { name: 'Exposed Data', icon: 'shield-off', desc: 'Data leaks & exposure', color: 'from-rose-500/20 to-red-500/20 border-rose-500/20' },
-    { name: 'Access Control', icon: 'key', desc: 'Broken access control', color: 'from-orange-500/20 to-amber-500/20 border-orange-500/20' },
-    { name: 'Phishing', icon: 'fish', desc: 'Social engineering attacks', color: 'from-cyan-500/20 to-teal-500/20 border-cyan-500/20' },
-    { name: 'API Security', icon: 'terminal', desc: 'API & endpoint flaws', color: 'from-blue-500/20 to-indigo-500/20 border-blue-500/20' },
-    { name: 'Mobile', icon: 'smartphone', desc: 'Mobile app vulnerabilities', color: 'from-emerald-500/20 to-green-500/20 border-emerald-500/20' },
-    { name: 'Cloud', icon: 'cloud', desc: 'Cloud infrastructure risks', color: 'from-sky-500/20 to-blue-500/20 border-sky-500/20' },
-    { name: 'Social Engineering', icon: 'users', desc: 'Human-centric attacks', color: 'from-violet-500/20 to-purple-500/20 border-violet-500/20' },
-    { name: 'Other', icon: 'alert-triangle', desc: 'General security issues', color: 'from-slate-400/20 to-gray-400/20 border-slate-400/20' }
+    { name: 'Social Media Scam', icon: 'users', desc: 'Facebook, Telegram, Instagram & WhatsApp scams', color: 'from-red-500/20 to-orange-500/20 border-red-500/20' },
+    { name: 'Marketplace Fraud', icon: 'database', desc: 'Daraz, Alibaba, OLX & eBay fake listings', color: 'from-purple-500/20 to-pink-500/20 border-purple-500/20' },
+    { name: 'Phishing', icon: 'fish', desc: 'Account takeovers & credential theft', color: 'from-cyan-500/20 to-teal-500/20 border-cyan-500/20' },
+    { name: 'Fake Job Offers', icon: 'terminal', desc: 'Employment & freelance scams', color: 'from-amber-500/20 to-yellow-500/20 border-amber-500/20' },
+    { name: 'Investment Scams', icon: 'crosshair', desc: 'Crypto & investment fraud', color: 'from-slate-500/20 to-gray-500/20 border-slate-500/20' },
+    { name: 'Software & Services', icon: 'smartphone', desc: 'Software house & app service complaints', color: 'from-emerald-500/20 to-green-500/20 border-emerald-500/20' },
+    { name: 'Billing Disputes', icon: 'settings', desc: 'Subscription & billing complaints', color: 'from-orange-500/20 to-amber-500/20 border-orange-500/20' },
+    { name: 'Poor Service', icon: 'shield-off', desc: 'Breach of contract & bad service', color: 'from-rose-500/20 to-red-500/20 border-rose-500/20' },
+    { name: 'Rental & Property', icon: 'key', desc: 'Rental & property scams', color: 'from-sky-500/20 to-blue-500/20 border-sky-500/20' },
+    { name: 'Identity Theft', icon: 'lock', desc: 'Impersonation & identity fraud', color: 'from-violet-500/20 to-purple-500/20 border-violet-500/20' },
+    { name: 'Delivery Scams', icon: 'cloud', desc: 'Courier & delivery fraud', color: 'from-blue-500/20 to-indigo-500/20 border-blue-500/20' },
+    { name: 'Other', icon: 'alert-triangle', desc: 'General consumer complaints', color: 'from-slate-400/20 to-gray-400/20 border-slate-400/20' }
   ];
 
   const howItWorks = [
-    { step: 1, title: 'Discover & Research', description: 'Browse public vulnerability reports and research security findings across categories, organizations, and severity levels.', icon: 'search' },
-    { step: 2, title: 'Submit Reports', description: 'Create detailed vulnerability reports with evidence, screenshots, reproduction steps, and timeline data.', icon: 'edit' },
-    { step: 3, title: 'Track Progress', description: 'Follow case resolution, view evidence timelines, and access analytics across the platform.', icon: 'bar-chart' },
-    { step: 4, title: 'Community Impact', description: 'Collaborate responsibly, build reputation, and help make the digital ecosystem safer for everyone.', icon: 'globe' }
+    { step: 1, title: 'Browse Reports', description: 'Search public scam reports and complaints across categories, organizations, and severity levels before you buy, apply, or pay.', icon: 'search' },
+    { step: 2, title: 'File a Complaint', description: 'Submit a detailed complaint with evidence — screenshots, chat logs, receipts, and PDFs — plus a timeline of what happened.', icon: 'edit' },
+    { step: 3, title: 'Track Progress', description: 'Follow your complaint status, view evidence timelines, and access analytics across the platform.', icon: 'bar-chart' },
+    { step: 4, title: 'Warn the Community', description: 'Upvote, comment, and help others avoid the same scam or bad experience.', icon: 'globe' }
   ];
 
   let stats: PublicStats = {
@@ -66,8 +66,8 @@
   let footerRef: HTMLElement;
 
   const highlights = [
-    { label: 'Explore Cases', href: '/explore' },
-    { label: 'Submit Report', href: '/register' },
+    { label: 'Browse Complaints', href: '/explore' },
+    { label: 'File a Complaint', href: '/register' },
     { label: 'Learn More', href: '#how-it-works' }
   ];
 
@@ -266,10 +266,10 @@
 </script>
 
 <svelte:head>
-  <title>EvidenceVault | Responsible Disclosure Intelligence</title>
+  <title>EvidenceVault | Report Scams & Consumer Complaints</title>
   <meta
     name="description"
-    content="A modern platform for responsible vulnerability disclosure, evidence management, and security intelligence."
+    content="Report scams on Facebook, Telegram, Daraz, Alibaba and more. File complaints against organizations and software houses, back them with evidence, and warn the community."
   />
 </svelte:head>
 
@@ -299,20 +299,20 @@
             <span class="flex h-2 w-2 rounded-full bg-emerald-400">
               <span class="h-2 w-2 animate-ping rounded-full bg-emerald-400"></span>
             </span>
-            <span class="text-xs font-semibold uppercase tracking-[0.15em] text-blue-700 dark:text-blue-300">Trusted disclosure platform</span>
+            <span class="text-xs font-semibold uppercase tracking-[0.15em] text-blue-700 dark:text-blue-300">Trusted complaint platform</span>
           </div>
 
           <div class="space-y-6">
             <h1 class="hero-title text-5xl font-bold leading-tight tracking-tight sm:text-6xl lg:text-7xl">
-              <span class="gradient-text">Vulnerability</span>
+              Expose every
               <br />
-              intelligence for
+              <span class="gradient-text">scam</span> for
               <br />
               the <span class="gradient-text">community</span>.
             </h1>
             <p class="hero-subtitle max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-              EvidenceVault empowers security researchers and organizations to responsibly
-              disclose, track, and analyze vulnerabilities with a modern, public-first workflow.
+              EvidenceVault empowers people to report scams on social platforms and marketplaces,
+              file complaints against organizations, and track them with a modern, public-first workflow.
             </p>
           </div>
 
@@ -323,7 +323,7 @@
               <input
                 class="w-full rounded-xl border-0 bg-transparent py-3 pl-11 pr-4 text-base text-slate-900 outline-none placeholder:text-slate-400 focus:ring-0 dark:text-white dark:placeholder:text-slate-500"
                 bind:value={search}
-                placeholder="Search vulnerabilities, organizations, and reports..."
+                placeholder="Search scams, organizations, and complaints..."
                 maxlength={200}
                 on:keydown={(event) => event.key === 'Enter' && submitSearch()}
                 aria-label="Search public reports"
@@ -373,7 +373,7 @@
             <div class="stat-card rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm backdrop-blur transition-all duration-300 hover:border-blue-300 dark:border-slate-700/60 dark:bg-slate-800/40 dark:hover:border-blue-500/30">
               <div class="flex items-center gap-2">
                 <svg class="h-4 w-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/></svg>
-                <p class="text-xs font-medium uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">Researchers</p>
+                <p class="text-xs font-medium uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">Reporters</p>
               </div>
               <p class="mt-2 text-2xl font-bold text-slate-900 dark:text-white">
                 {#if loading}
@@ -446,9 +446,9 @@
                 <div class="flex items-start gap-3">
                   <svg class="mt-0.5 h-6 w-6 shrink-0 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                   <div>
-                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Responsible disclosure platform</p>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Community-driven complaint platform</p>
                     <p class="mt-1 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                      Built for researchers, organizations, and the community to collaborate on security findings.
+                      Built for consumers, organizations, and the community to expose scams together.
                     </p>
                   </div>
                 </div>
@@ -467,7 +467,7 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-700 dark:text-blue-300">Trending Now</p>
-              <h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Most discussed cases</h2>
+              <h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Most discussed complaints</h2>
             </div>
             <a class="group flex items-center gap-1 text-sm font-semibold text-blue-600 transition-colors hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300" href="/explore">
               View all
@@ -594,10 +594,10 @@
         <div class="mx-auto max-w-2xl text-center">
           <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-700 dark:text-blue-300">How It Works</p>
           <h2 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-            From discovery to resolution
+            From complaint to resolution
           </h2>
           <p class="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-            A simple, transparent workflow for responsible vulnerability disclosure.
+            A simple, transparent workflow for reporting scams and filing complaints.
           </p>
         </div>
 
@@ -626,15 +626,15 @@
       </div>
     </section>
 
-    <!-- ============ SECURITY CATEGORIES ============ -->
+    <!-- ============ COMPLAINT CATEGORIES ============ -->
     <section bind:this={categoriesRef} class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-2xl text-center">
         <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-700 dark:text-blue-300">Categories</p>
         <h2 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-          Browse by vulnerability type
+          Browse by scam & complaint type
         </h2>
         <p class="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-          Explore reports across a wide range of security categories.
+          Explore complaints across a wide range of scam and consumer-complaint categories.
         </p>
       </div>
 
@@ -664,10 +664,10 @@
         <div class="mx-auto max-w-2xl text-center">
           <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-700 dark:text-blue-300">Organizations</p>
           <h2 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-            Active disclosure programs
+            Most reported organizations
           </h2>
           <p class="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-            Organizations committed to transparent security practices.
+            Platforms, companies, and organizations the community has filed complaints against.
           </p>
         </div>
 
@@ -736,12 +736,12 @@
             </div>
             <div>
               <p class="text-lg font-bold text-slate-900 dark:text-white">EvidenceVault</p>
-              <p class="text-xs font-medium uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">Disclosure Intelligence</p>
+              <p class="text-xs font-medium uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">Report Scams & Complaints</p>
             </div>
           </div>
           <p class="max-w-xs text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-            A modern platform for responsible vulnerability disclosure,
-            evidence management, and security intelligence.
+            A modern platform for reporting scams and filing complaints,
+            backed by real evidence and a community that helps each other.
           </p>
           <div class="flex items-center gap-4">
             <a href="/" rel="nofollow" class="text-slate-400 transition-colors hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400" aria-label="Twitter">
@@ -760,8 +760,8 @@
         <div>
           <h4 class="text-sm font-bold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-300">Platform</h4>
           <ul class="mt-5 space-y-3">
-            <li><a href="/explore" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">Explore Reports</a></li>
-            <li><a href="/register" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">Submit Report</a></li>
+            <li><a href="/explore" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">Explore Complaints</a></li>
+            <li><a href="/register" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">File a Complaint</a></li>
             <li><a href="/explore" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">Search</a></li>
             <li><a href="/dashboard" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">Dashboard</a></li>
           </ul>
@@ -773,8 +773,8 @@
           <ul class="mt-5 space-y-3">
             <li><span role="link" tabindex="0" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white cursor-pointer">Documentation</span></li>
             <li><span role="link" tabindex="0" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white cursor-pointer">API Reference</span></li>
-            <li><span role="link" tabindex="0" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white cursor-pointer">Security Guide</span></li>
-            <li><span role="link" tabindex="0" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white cursor-pointer">Responsible Disclosure</span></li>
+            <li><span role="link" tabindex="0" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white cursor-pointer">Safety Guide</span></li>
+            <li><span role="link" tabindex="0" class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white cursor-pointer">How It Works</span></li>
           </ul>
         </div>
 
@@ -801,7 +801,7 @@
             <span role="link" tabindex="0" class="transition-colors hover:text-slate-700 dark:hover:text-slate-300 cursor-pointer">Cookies</span>
           </div>
           <p class="text-xs text-slate-400 dark:text-slate-500">
-            Built for the security community 🌐
+            Built for the community 🌐
           </p>
         </div>
       </div>

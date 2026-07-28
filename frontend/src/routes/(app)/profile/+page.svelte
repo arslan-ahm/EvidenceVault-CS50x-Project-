@@ -147,7 +147,7 @@
 </script>
 
 <svelte:head>
-  <title>Profile | EvidenceVault AI</title>
+  <title>Profile | EvidenceVault</title>
 </svelte:head>
 
 <div class="mb-6 flex items-center gap-3">
@@ -238,7 +238,7 @@
                 id="pocc"
                 label="Occupation (optional)"
                 bind:value={editOccupation}
-                placeholder="Security Researcher"
+                placeholder="Student, Freelancer, Shop Owner..."
                 maxlength={100}
                 autocomplete="organization-title"
                 error={editOccupationError}

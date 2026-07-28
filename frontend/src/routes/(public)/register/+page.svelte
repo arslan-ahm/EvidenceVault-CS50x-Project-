@@ -61,17 +61,17 @@
     <section class="space-y-6 text-center lg:text-left">
       <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl dark:text-white">
         Join the<br>
-        <span class="gradient-text">security</span> community
+        <span class="gradient-text">consumer protection</span> community
       </h1>
       <p class="max-w-xl text-lg text-slate-600 dark:text-slate-400">
-        Create a protected account to submit vulnerability reports, track cases,
-        and collaborate with researchers worldwide.
+        Create a free account to file scam reports and complaints, track their progress,
+        and help protect others in the community.
       </p>
       <div class="hidden space-y-4 lg:block">
         {#each [
-          { icon: '🛡️', text: 'Submit responsible disclosure reports' },
-          { icon: '📊', text: 'Track case progress with timelines' },
-          { icon: '🔍', text: 'Explore community-vetted vulnerabilities' },
+          { icon: '🛡️', text: 'File detailed scam & complaint reports' },
+          { icon: '📊', text: 'Track complaint progress with timelines' },
+          { icon: '🔍', text: 'Browse community-verified complaints' },
         ] as item}
           <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
             <span>{item.icon}</span>
@@ -84,7 +84,7 @@
     <!-- Right side: form -->
     <section class="card p-8">
       <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Create account</h2>
-      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Start your security journey</p>
+      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Start reporting scams and complaints</p>
 
       <form class="mt-6 space-y-4" on:submit|preventDefault={submitRegister} novalidate>
         <div class="grid gap-4 sm:grid-cols-2">
@@ -103,7 +103,7 @@
             id="occ"
             label="Occupation (optional)"
             bind:value={occupation}
-            placeholder="Security Researcher"
+            placeholder="Student, Freelancer, Shop Owner..."
             maxlength={100}
             autocomplete="organization-title"
             error={occupationError}

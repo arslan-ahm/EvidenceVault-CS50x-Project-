@@ -14,17 +14,18 @@ def _seed_categories() -> None:
         if existing is not None:
             return
         defaults = [
-            ("xss", "Cross-Site Scripting (XSS)"),
-            ("sql_injection", "SQL Injection"),
-            ("csrf", "Cross-Site Request Forgery (CSRF)"),
-            ("authentication", "Authentication Bypass"),
-            ("authorization", "Authorization Issue"),
-            ("information_disclosure", "Information Disclosure"),
-            ("remote_code_execution", "Remote Code Execution"),
-            ("privilege_escalation", "Privilege Escalation"),
-            ("file_upload", "File Upload Vulnerability"),
-            ("ssrf", "Server-Side Request Forgery (SSRF)"),
-            ("other", "Other / General"),
+            ("social_media_scam", "Social Media Scam (Facebook, Telegram, Instagram, WhatsApp)"),
+            ("marketplace_fraud", "Online Marketplace Fraud (Daraz, Alibaba, OLX, eBay)"),
+            ("phishing", "Phishing / Account Takeover"),
+            ("fake_job", "Fake Job / Employment Scam"),
+            ("investment_scam", "Investment / Crypto Scam"),
+            ("software_service_complaint", "Software & App Service Complaint"),
+            ("billing_dispute", "Billing & Subscription Dispute"),
+            ("poor_service", "Poor Service / Breach of Contract"),
+            ("rental_property_scam", "Rental & Property Scam"),
+            ("identity_theft", "Identity Theft / Impersonation"),
+            ("delivery_courier_scam", "Delivery / Courier Scam"),
+            ("other", "Other / General Complaint"),
         ]
         for value, label in defaults:
             session.add(Category(id=str(uuid4()), value=value, label=label))

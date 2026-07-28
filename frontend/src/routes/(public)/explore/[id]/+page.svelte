@@ -86,7 +86,7 @@
 </script>
 
 <svelte:head>
-  <title>{detail ? `${detail.report.title} | EvidenceVault AI` : 'Report | EvidenceVault AI'}</title>
+  <title>{detail ? `${detail.report.title} | EvidenceVault` : 'Complaint | EvidenceVault'}</title>
 </svelte:head>
 
 <div class="min-h-screen bg-slate-50 px-4 pb-16 pt-24 text-slate-900 dark:bg-slate-900 dark:text-white sm:px-6 lg:px-8">
