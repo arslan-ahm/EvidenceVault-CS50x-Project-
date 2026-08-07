@@ -15,6 +15,7 @@
 
   let reports: PublicReport[] = [];
   let loading = true;
+  let error = '';
   let pageSize = 12;
   let query = '';
   let sort = 'recent';
@@ -23,15 +24,21 @@
 
   async function loadReports() {
     loading = true;
-    const params = new URLSearchParams();
-    if (query.trim()) params.set('q', query.trim());
-    if (sort) params.set('sort', sort);
-    if (severity !== 'all') params.set('severity', severity);
-    if (status !== 'all') params.set('status', status);
-    params.set('limit', String(pageSize));
+    error = '';
+    try {
+      const params = new URLSearchParams();
+      if (query.trim()) params.set('q', query.trim());
+      if (sort) params.set('sort', sort);
+      if (severity !== 'all') params.set('severity', severity);
+      if (status !== 'all') params.set('status', status);
+      params.set('limit', String(pageSize));
 
-    reports = await apiGet<PublicReport[]>(`/public/reports?${params.toString()}`);
-    loading = false;
+      reports = await apiGet<PublicReport[]>(`/public/reports?${params.toString()}`);
+    } catch (err) {
+      error = err instanceof Error ? err.message : 'Unable to load reports';
+    } finally {
+      loading = false;
+    }
   }
 
   async function loadMore() {
@@ -99,6 +106,8 @@
 
     {#if loading}
       <LoadingCard label="Loading reports..." />
+    {:else if error}
+      <div class="card p-8 text-center text-sm text-slate-500 dark:text-slate-400">{error}</div>
     {:else if reports.length === 0}
       <div class="card p-8 text-sm text-slate-500 dark:text-slate-400">No public reports match these filters.</div>
     {:else}
