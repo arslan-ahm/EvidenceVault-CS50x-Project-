@@ -1,6 +1,11 @@
+import { dev } from '$app/environment';
 import { env } from '$env/dynamic/public';
 
-const API_BASE_URL = env.PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
+// Frontend and backend share one domain on Vercel (see vercel.json rewrites),
+// so production defaults to a relative path. Local dev runs SvelteKit and
+// FastAPI on separate ports, so it needs the absolute backend URL instead.
+// PUBLIC_API_BASE_URL overrides this in either environment when set.
+const API_BASE_URL = env.PUBLIC_API_BASE_URL || (dev ? 'http://localhost:8000/api' : '/api');
 
 export class ApiError extends Error {
   status: number;
