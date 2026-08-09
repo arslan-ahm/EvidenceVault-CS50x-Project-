@@ -1,18 +1,19 @@
-"""MEGA storage service (via the unofficial `mega.py` package).
+"""MEGA storage service (via the vendored `app.vendor.mega` package).
 
 When MEGA_UPLOADS_EMAIL / MEGA_UPLOADS_PASSWORD are configured, evidence files
 are uploaded to the account's MEGA drive and a shareable link is returned.
 Otherwise the storage layer falls back to local disk. Avatars are always kept
 local (see storage.save_avatar_file for why).
 
-Compatibility note: `mega.py` pins `tenacity<6.0.0`, and tenacity 5.x imports
-`asyncio.coroutine` at module load time — removed in Python 3.11+. Forcing a
-newer tenacity in pyproject.toml makes pip's resolver backtrack to an older
-mega.py release that depends on the unmaintained `pycrypto` package (which
-fails to build here). Instead we let `mega.py` install with its natural,
-cleanly-resolvable dependencies and patch the missing attribute ourselves —
-the async retry path this shim stands in for is never exercised by mega.py's
-own (synchronous) usage of tenacity.
+`app.vendor.mega` is a vendored copy of the unofficial `mega.py` package (see
+app/vendor/mega/NOTICE.md for why) rather than a PyPI install.
+
+Compatibility note: we pin `tenacity<6.0.0` (matching what mega.py's own
+requirements.txt pins), and tenacity 5.x imports `asyncio.coroutine` at
+module load time — removed in Python 3.11+. We patch the missing attribute
+ourselves rather than upgrading tenacity — the async retry path this shim
+stands in for is never exercised by mega.py's own (synchronous) usage of
+tenacity.
 """
 
 from __future__ import annotations
@@ -41,7 +42,7 @@ def _get_client():
     with _client_lock:
         if _client is None:
             from app.core.config import get_settings
-            from mega import Mega
+            from app.vendor.mega import Mega
 
             settings = get_settings()
             mega = Mega()
