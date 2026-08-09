@@ -18,12 +18,13 @@ export class ApiError extends Error {
 
 async function parseResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
-    let message = 'Request failed';
+    const rawBody = await response.text();
+    let message = rawBody || 'Request failed';
     try {
-      const body = await response.json();
+      const body = JSON.parse(rawBody);
       message = body.detail ?? message;
     } catch {
-      message = await response.text();
+      // rawBody isn't JSON — use it as-is.
     }
     throw new ApiError(message, response.status);
   }
