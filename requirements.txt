@@ -6,8 +6,8 @@
 # shadows the stdlib `pathlib` module for the whole process and crashes every
 # function at cold start, before any app code runs. This local package
 # satisfies the same name/version pin but just delegates to the real stdlib
-# implementation - see vendor/pathlib-compat/pathlib.py.
-./vendor/pathlib-compat
+# implementation - see vendor/pathlib/pathlib.py.
+./vendor/pathlib
 fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 sqlmodel>=0.0.22
