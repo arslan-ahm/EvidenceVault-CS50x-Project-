@@ -1,5 +1,13 @@
 # Vercel's Python runtime installs from this file for the api/index.py
 # serverless function. Kept in sync with backend/pyproject.toml.
+#
+# mega.py pins the abandoned `pathlib==1.0.1` PyPI backport, whose source does
+# `from collections import Sequence` (removed in Python 3.10+). Installing it
+# shadows the stdlib `pathlib` module for the whole process and crashes every
+# function at cold start, before any app code runs. This local package
+# satisfies the same name/version pin but just delegates to the real stdlib
+# implementation - see vendor/pathlib-compat/pathlib.py.
+./vendor/pathlib-compat
 fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 sqlmodel>=0.0.22
