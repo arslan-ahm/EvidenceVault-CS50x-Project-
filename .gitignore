@@ -20,3 +20,6 @@ uploads/
 Thumbs.db
 .vercel/
 authorities.json
+
+.vercel
+.env*

@@ -1,3 +1,4 @@
+import os
 from functools import lru_cache
 from pathlib import Path
 from typing import Optional
@@ -6,6 +7,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
+
+# Vercel's serverless filesystem is read-only except for /tmp (which is ephemeral
+# and not shared across instances). Vercel sets VERCEL=1 in every function's
+# environment, so use that to pick a writable default without needing a
+# project-specific env var.
+_DEFAULT_UPLOADS_DIR = Path("/tmp/uploads") if os.environ.get("VERCEL") else Path("uploads")
 
 
 class Settings(BaseSettings):
@@ -39,7 +46,7 @@ class Settings(BaseSettings):
     public_api_base_url: str = "http://localhost:8000/api"
 
     # Uploads (local fallback when MEGA not configured)
-    uploads_dir: Path = Path("uploads")
+    uploads_dir: Path = _DEFAULT_UPLOADS_DIR
     max_upload_mb: int = 25
 
     # SMTP (email) — leave smtp_host empty to disable outgoing email
