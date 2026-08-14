@@ -1,3 +1,6 @@
+from collections import Counter
+from datetime import datetime, timedelta, timezone
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlmodel import Session, func, select
@@ -231,6 +234,117 @@ def delete_case_admin(
     session.delete(case)
     session.commit()
     return {"detail": "Case deleted"}
+
+
+class CountPoint(BaseModel):
+    key: str
+    label: str
+    count: int
+
+
+class DayPoint(BaseModel):
+    date: str
+    count: int
+
+
+class OrgCount(BaseModel):
+    name: str
+    count: int
+
+
+class AdminAnalytics(BaseModel):
+    cases_by_category: list[CountPoint]
+    cases_by_status: list[CountPoint]
+    cases_by_severity: list[CountPoint]
+    cases_per_day: list[DayPoint]
+    signups_per_day: list[DayPoint]
+    top_organizations: list[OrgCount]
+
+
+STATUS_LABELS = {"open": "Open", "in_progress": "In Progress", "resolved": "Resolved", "closed": "Closed"}
+SEVERITY_LABELS = {"low": "Low", "medium": "Medium", "high": "High", "critical": "Critical"}
+STATUS_ORDER = ["open", "in_progress", "resolved", "closed"]
+SEVERITY_ORDER = ["low", "medium", "high", "critical"]
+CATEGORY_LABELS = {
+    "social_media_scam": "Social Media Scam",
+    "marketplace_fraud": "Marketplace Fraud",
+    "phishing": "Phishing",
+    "fake_job": "Fake Job",
+    "investment_scam": "Investment Scam",
+    "software_service_complaint": "Software/Service",
+    "billing_dispute": "Billing Dispute",
+    "poor_service": "Poor Service",
+    "rental_property_scam": "Rental/Property",
+    "identity_theft": "Identity Theft",
+    "delivery_courier_scam": "Delivery/Courier",
+    "other": "Other",
+}
+
+
+def _daily_counts(dates: list[datetime], window_days: int) -> list[DayPoint]:
+    today = datetime.now(timezone.utc).date()
+    start = today - timedelta(days=window_days - 1)
+    buckets = Counter()
+    for dt in dates:
+        d = dt.date() if hasattr(dt, "date") else dt
+        if d >= start:
+            buckets[d.isoformat()] += 1
+    points = []
+    for i in range(window_days):
+        d = start + timedelta(days=i)
+        points.append(DayPoint(date=d.isoformat(), count=buckets.get(d.isoformat(), 0)))
+    return points
+
+
+@router.get("/analytics", response_model=AdminAnalytics)
+def admin_analytics(
+    session: Session = Depends(get_session),
+    _admin: User = Depends(get_current_admin),
+) -> AdminAnalytics:
+    cases = session.exec(select(Case.category, Case.status, Case.severity, Case.created_at)).all()
+    category_counts = Counter(c[0] for c in cases)
+    status_counts = Counter(c[1] for c in cases)
+    severity_counts = Counter(c[2] for c in cases)
+
+    cases_by_category = sorted(
+        (
+            CountPoint(key=key, label=CATEGORY_LABELS.get(key, key), count=count)
+            for key, count in category_counts.items()
+        ),
+        key=lambda p: p.count,
+        reverse=True,
+    )
+    cases_by_status = [
+        CountPoint(key=key, label=STATUS_LABELS.get(key, key), count=status_counts.get(key, 0))
+        for key in STATUS_ORDER
+    ]
+    cases_by_severity = [
+        CountPoint(key=key, label=SEVERITY_LABELS.get(key, key), count=severity_counts.get(key, 0))
+        for key in SEVERITY_ORDER
+    ]
+
+    cases_per_day = _daily_counts([c[3] for c in cases], window_days=30)
+
+    users = session.exec(select(User.created_at)).all()
+    signups_per_day = _daily_counts(list(users), window_days=30)
+
+    org_rows = session.exec(
+        select(Organization.name, func.count(Case.id))
+        .join(Case, Case.organization_id == Organization.id)
+        .group_by(Organization.name)
+        .order_by(func.count(Case.id).desc())
+        .limit(8)
+    ).all()
+    top_organizations = [OrgCount(name=name, count=count) for name, count in org_rows]
+
+    return AdminAnalytics(
+        cases_by_category=cases_by_category,
+        cases_by_status=cases_by_status,
+        cases_by_severity=cases_by_severity,
+        cases_per_day=cases_per_day,
+        signups_per_day=signups_per_day,
+        top_organizations=top_organizations,
+    )
 
 
 @router.get("/comments", response_model=list[AdminCommentOut])

@@ -4,9 +4,13 @@
 
   import Alert from '$lib/components/Alert.svelte';
   import LoadingCard from '$lib/components/LoadingCard.svelte';
+  import BarChart from '$lib/components/charts/BarChart.svelte';
+  import DonutChart from '$lib/components/charts/DonutChart.svelte';
+  import LineChart from '$lib/components/charts/LineChart.svelte';
+  import { categorical, status as statusPalette } from '$lib/charts/palette';
   import { apiDelete, apiGet, apiPatch, apiPut } from '$lib/api';
   import { authReady, currentUser } from '$lib/stores/auth';
-  import type { AdminCase, AdminStats, AdminUser, PublicOrganization, User } from '$lib/types';
+  import type { AdminAnalytics, AdminCase, AdminStats, AdminUser, PublicOrganization, User } from '$lib/types';
   import { validateLength } from '$lib/validation';
 
   type AdminComment = {
@@ -18,13 +22,14 @@
     created_at: string;
   };
 
-  type Tab = 'reports' | 'users' | 'organizations' | 'comments';
+  type Tab = 'overview' | 'reports' | 'users' | 'organizations' | 'comments';
 
   let ready = false;
   let allowed = false;
-  let tab: Tab = 'reports';
+  let tab: Tab = 'overview';
 
   let stats: AdminStats | null = null;
+  let analytics: AdminAnalytics | null = null;
   let cases: AdminCase[] = [];
   let users: AdminUser[] = [];
   let organizations: PublicOrganization[] = [];
@@ -33,15 +38,39 @@
   let editingOrgName = '';
   let message = '';
 
+  const severityColors: Record<string, { light: string; dark: string }> = {
+    low: statusPalette.good,
+    medium: statusPalette.warning,
+    high: statusPalette.serious,
+    critical: statusPalette.critical,
+  };
+  const statusColors: Record<string, { light: string; dark: string }> = {
+    open: categorical[0],
+    in_progress: categorical[1],
+    resolved: categorical[2],
+    closed: categorical[3],
+  };
+
+  $: severityChartData = (analytics?.cases_by_severity ?? []).map((d) => ({
+    ...d,
+    color: severityColors[d.key] ?? categorical[0],
+  }));
+  $: statusChartData = (analytics?.cases_by_status ?? []).map((d) => ({
+    ...d,
+    color: statusColors[d.key] ?? categorical[0],
+  }));
+
   async function loadAll() {
-    const [statsData, casesData, usersData, orgsData, commentsData] = await Promise.all([
+    const [statsData, analyticsData, casesData, usersData, orgsData, commentsData] = await Promise.all([
       apiGet<AdminStats>('/admin/stats'),
+      apiGet<AdminAnalytics>('/admin/analytics'),
       apiGet<AdminCase[]>('/admin/cases'),
       apiGet<AdminUser[]>('/admin/users'),
       apiGet<PublicOrganization[]>('/public/organizations?limit=100'),
       apiGet<AdminComment[]>('/admin/comments'),
     ]);
     stats = statsData;
+    analytics = analyticsData;
     cases = casesData;
     users = usersData;
     organizations = orgsData;
@@ -162,7 +191,7 @@
     {/if}
 
     <div class="mb-6 flex gap-2 border-b border-slate-200 dark:border-slate-700/60">
-      {#each [['reports', 'Reports'], ['users', 'Users'], ['organizations', 'Organizations'], ['comments', 'Comments']] as [key, label]}
+      {#each [['overview', 'Overview'], ['reports', 'Reports'], ['users', 'Users'], ['organizations', 'Organizations'], ['comments', 'Comments']] as [key, label]}
         <button
           class="border-b-2 px-4 py-2 text-sm font-medium transition-colors"
           class:border-blue-500={tab === key}
@@ -178,7 +207,45 @@
       {/each}
     </div>
 
-    {#if tab === 'reports'}
+    {#if tab === 'overview'}
+      <div class="grid gap-4 lg:grid-cols-2">
+        <div class="card p-5 lg:col-span-2">
+          <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Complaints filed — last 30 days</h3>
+          <p class="mb-4 mt-0.5 text-xs text-slate-400 dark:text-slate-500">Daily count of new complaints across the platform.</p>
+          <LineChart data={analytics?.cases_per_day ?? []} />
+        </div>
+
+        <div class="card p-5">
+          <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Complaints by category</h3>
+          <p class="mb-4 mt-0.5 text-xs text-slate-400 dark:text-slate-500">Ranked by total complaints filed.</p>
+          <BarChart data={analytics?.cases_by_category ?? []} />
+        </div>
+
+        <div class="card p-5">
+          <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Top organizations</h3>
+          <p class="mb-4 mt-0.5 text-xs text-slate-400 dark:text-slate-500">Most complained-about organizations.</p>
+          <BarChart data={(analytics?.top_organizations ?? []).map((o) => ({ key: o.name, label: o.name, count: o.count }))} />
+        </div>
+
+        <div class="card p-5">
+          <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Complaints by status</h3>
+          <p class="mb-4 mt-0.5 text-xs text-slate-400 dark:text-slate-500">Current moderation/workflow state.</p>
+          <DonutChart data={statusChartData} />
+        </div>
+
+        <div class="card p-5">
+          <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Complaints by severity</h3>
+          <p class="mb-4 mt-0.5 text-xs text-slate-400 dark:text-slate-500">Self-reported severity at filing time.</p>
+          <DonutChart data={severityChartData} />
+        </div>
+
+        <div class="card p-5 lg:col-span-2">
+          <h3 class="text-sm font-semibold text-slate-900 dark:text-white">User signups — last 30 days</h3>
+          <p class="mb-4 mt-0.5 text-xs text-slate-400 dark:text-slate-500">New accounts created per day.</p>
+          <LineChart data={analytics?.signups_per_day ?? []} color={categorical[2]} />
+        </div>
+      </div>
+    {:else if tab === 'reports'}
       <div class="card overflow-x-auto">
         <table class="w-full text-left text-sm">
           <thead class="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-400 dark:border-slate-700/60 dark:text-slate-500">

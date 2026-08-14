@@ -55,6 +55,17 @@ def _migrate_schema() -> None:
         if "is_banned" not in existing_columns:
             conn.execute(text('ALTER TABLE "user" ADD COLUMN is_banned BOOLEAN NOT NULL DEFAULT FALSE'))
 
+    # `evidence.public_url` was added after some databases already had the
+    # table created (pre-dating MEGA storage support) — SQLModel.metadata.
+    # create_all() only creates missing tables, it never alters existing
+    # ones, so this column can silently be absent in older databases and
+    # crash every MEGA-backed evidence upload.
+    if inspector.has_table("evidence"):
+        evidence_columns = {col["name"] for col in inspector.get_columns("evidence")}
+        if "public_url" not in evidence_columns:
+            with engine.begin() as conn:
+                conn.execute(text("ALTER TABLE evidence ADD COLUMN public_url VARCHAR"))
+
 
 def init_db() -> None:
     SQLModel.metadata.create_all(engine)

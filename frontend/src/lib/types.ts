@@ -99,6 +99,19 @@ export type AdminCase = {
   created_at: string;
 };
 
+export type AdminCountPoint = { key: string; label: string; count: number };
+export type AdminDayPoint = { date: string; count: number };
+export type AdminOrgCount = { name: string; count: number };
+
+export type AdminAnalytics = {
+  cases_by_category: AdminCountPoint[];
+  cases_by_status: AdminCountPoint[];
+  cases_by_severity: AdminCountPoint[];
+  cases_per_day: AdminDayPoint[];
+  signups_per_day: AdminDayPoint[];
+  top_organizations: AdminOrgCount[];
+};
+
 export type PublicStats = {
   total_reports: number;
   total_organizations: number;

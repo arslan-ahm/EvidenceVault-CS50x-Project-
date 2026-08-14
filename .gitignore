@@ -23,3 +23,4 @@ authorities.json
 
 .vercel
 .env*
+TEMP_CREDENTIALS.md
